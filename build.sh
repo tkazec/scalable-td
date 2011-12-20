@@ -2,7 +2,7 @@
 # $ bash build.sh containerdir
 
 SRCDIR="$( cd "$( dirname "$0" )" && pwd )"
-OUTDIR="$1/canvas-td"
+OUTDIR="$1/scalable-td"
 
 rm -rf $OUTDIR
 cp -R $SRCDIR $OUTDIR
