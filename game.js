@@ -1,25 +1,35 @@
+(function() {
+	var lastTime = 0;
+	var vendors = ['ms', 'moz', 'webkit', 'o'];
+	for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+		window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+		window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+	}
+
+	if (!window.requestAnimationFrame)
+		window.requestAnimationFrame = function(callback, element) {
+			var currTime = new Date().getTime();
+			var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+			var id = window.setTimeout(function() { callback(currTime + timeToCall); }, timeToCall);
+			lastTime = currTime + timeToCall;
+			return id;
+		};
+
+	if (!window.cancelAnimationFrame)
+		window.cancelAnimationFrame = function(id) {
+			clearTimeout(id);
+		};
+}());
+
+(function () {
 "use strict";
-(function(){
 
 /*** helpers ***/
-window.requestAnimFrame = (function(){
-	return 	window.requestAnimationFrame		||
-			window.webkitRequestAnimationFrame	||
-			window.mozRequestAnimationFrame		||
-			window.oRequestAnimationFrame		||
-			window.msRequestAnimationFrame		||
-			function(callback){
-				window.setTimeout(function(){
-					callback(Date.now());
-				}, 1000 / 60);
-			};
-})();
-
-window.requestAnimLoop = function(tick, element){
+var requestAnimationLoop = function (tick, element) {
 	var last = Date.now();
 	
-	function loop(now) {
-		window.requestAnimFrame(loop, element);
+	function loop (now) {
+		requestAnimationFrame(loop, element);
 		tick(now - last);
 		last = now;
 	}
@@ -32,7 +42,7 @@ window.requestAnimLoop = function(tick, element){
 var paper = Raphael(document.body, 1280, 720);
 paper.setViewBox(0, 0, 1280, 720);
 
-function layout() {
+var layout = function () {
 	var width = document.documentElement.clientWidth,
 		height = document.documentElement.clientHeight,
 		horizontal = width / 1280,
@@ -44,7 +54,7 @@ function layout() {
 	
 	paper.canvas.style.left = ((width - (1280 * scale)) / 2) + "px";
 	paper.canvas.style.top = ((height - (720 * scale)) / 2) + "px";
-}
+};
 
 
 /*** shapes ***/
@@ -62,7 +72,7 @@ var plen = path.getTotalLength(),
 window.addEventListener("resize", layout, false);
 layout();
 
-window.requestAnimLoop(function(dt){
+requestAnimationLoop(function (dt) {
 	var pos = path.getPointAtLength(point += (dt / (1000 / 60)));
 	
 	circle.attr({ cx: pos.x, cy: pos.y });
