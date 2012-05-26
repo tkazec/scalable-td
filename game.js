@@ -21,8 +21,7 @@
 		};
 }());
 
-(function () {
-"use strict";
+(function () { "use strict";
 
 /*** helpers ***/
 var requestAnimationLoop = function (tick, element) {
@@ -43,11 +42,11 @@ var paper = Raphael(document.body, 1280, 720);
 paper.setViewBox(0, 0, 1280, 720);
 
 var layout = function () {
-	var width = document.documentElement.clientWidth,
-		height = document.documentElement.clientHeight,
-		horizontal = width / 1280,
-		vertical = height / 720,
-		scale = Math.min(horizontal < vertical ? horizontal : vertical, 1);
+	var width = document.documentElement.clientWidth;
+	var height = document.documentElement.clientHeight;
+	var horizontal = width / 1280;
+	var vertical = height / 720;
+	var scale = Math.min(horizontal < vertical ? horizontal : vertical, 1);
 	
 	paper.canvas.setAttribute("width", 1280 * scale);
 	paper.canvas.setAttribute("height", 720 * scale);
@@ -64,8 +63,8 @@ var path = paper.path("M 0,0 C 210.44511,587.53709 340.77151,743.50148 472.16617
 var circle = paper.circle(0, 0, 20)
 	.attr({ fill: "red", stroke: "none" });
 
-var plen = path.getTotalLength(),
-	point = 0;
+var plen = path.getTotalLength();
+var point = 0;
 
 
 /*** start ***/
